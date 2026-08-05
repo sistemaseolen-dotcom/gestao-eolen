@@ -30,7 +30,7 @@ export default async function PatrimonioPage({
 
   let query = supabase
     .from("patrimonio")
-    .select(`id, tipo, modelo, numero_serie, codigo_patrimonio, valor, status, pessoas ( nome )`, { count: "exact" })
+    .select(`id, tipo, modelo, numero_serie, codigo_patrimonio, valor, status, responsavel_nome`, { count: "exact" })
     .order("codigo_patrimonio")
     .range(from, to);
 
@@ -82,7 +82,7 @@ export default async function PatrimonioPage({
                 <td className="px-4 py-3 text-neutral-600">{p.tipo || "-"}</td>
                 <td className="px-4 py-3 text-neutral-600">{p.modelo || "-"}</td>
                 <td className="px-4 py-3 text-neutral-600">{p.numero_serie || "-"}</td>
-                <td className="px-4 py-3 text-neutral-600">{p.pessoas?.nome || "-"}</td>
+                <td className="px-4 py-3 text-neutral-600">{p.responsavel_nome || "-"}</td>
                 <td className="px-4 py-3 text-neutral-600">{p.status || "-"}</td>
                 <td className="px-4 py-3 text-neutral-600">
                   {p.valor != null ? Number(p.valor).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }) : "-"}

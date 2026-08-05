@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import type { PatrimonioLookups } from "./lookups";
 
 const inputCls =
   "w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-[#a7332a] focus:outline-none";
@@ -18,12 +17,10 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 
 export default function PatrimonioForm({
   action,
-  lookups,
   initial,
   submitLabel,
 }: {
   action: (formData: FormData) => void;
-  lookups: PatrimonioLookups;
   initial?: {
     tipo?: string | null;
     modelo?: string | null;
@@ -31,7 +28,7 @@ export default function PatrimonioForm({
     codigo_patrimonio?: string | null;
     valor?: number | null;
     status?: string | null;
-    pessoa_id?: string | null;
+    responsavel_nome?: string | null;
   };
   submitLabel: string;
 }) {
@@ -68,15 +65,8 @@ export default function PatrimonioForm({
       </Field>
 
       <div className="col-span-full">
-        <Field label="Responsável (pessoa)">
-          <select name="pessoa_id" defaultValue={initial?.pessoa_id || ""} className={inputCls}>
-            <option value="">-</option>
-            {lookups.pessoas.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.nome}
-              </option>
-            ))}
-          </select>
+        <Field label="Responsável">
+          <input name="responsavel_nome" defaultValue={initial?.responsavel_nome || ""} className={inputCls} />
         </Field>
       </div>
 

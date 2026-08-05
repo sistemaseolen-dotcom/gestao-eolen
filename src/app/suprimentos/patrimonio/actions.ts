@@ -24,7 +24,7 @@ function buildPayload(formData: FormData) {
     codigo_patrimonio: toNull(formData.get("codigo_patrimonio")),
     valor: toNumberOrNull(formData.get("valor")),
     status: toNull(formData.get("status")),
-    pessoa_id: toNull(formData.get("pessoa_id")),
+    responsavel_nome: toNull(formData.get("responsavel_nome")),
   };
 }
 
