@@ -71,7 +71,7 @@ export default async function PessoasPage({
   let query = supabase
     .from("pessoas")
     .select(
-      `id, nome, status, regional, estado_servico, numero_registro, data_admissao,
+      `id, nome, status, regional, estado_servico, numero_registro, data_admissao, cpf,
        empresas ( razao_social, nome_fantasia ),
        cargos ( nome ),
        projetos ( nome ),
@@ -148,10 +148,13 @@ export default async function PessoasPage({
               </th>
               <th className="w-8 px-2 py-3"></th>
               <ColHeader>Nome</ColHeader>
+              <ColHeader>Equipe</ColHeader>
               <ColHeader>Empresa</ColHeader>
               <ColHeader>Cargo</ColHeader>
               <ColHeader>Projeto</ColHeader>
+              <ColHeader>Operadora</ColHeader>
               <ColHeader>Regional</ColHeader>
+              <ColHeader>CPF</ColHeader>
               <ColHeader>Admissão</ColHeader>
               <th className="px-4 py-3 font-medium text-neutral-500">Ações</th>
             </tr>
@@ -166,12 +169,15 @@ export default async function PessoasPage({
                   <StatusDot status={p.status} />
                 </td>
                 <td className="whitespace-nowrap px-4 py-3 font-medium text-[#a7332a]">{p.nome}</td>
+                <td className="px-4 py-3 text-neutral-600">{p.equipes?.nome || "-"}</td>
                 <td className="px-4 py-3 text-neutral-600">
                   {p.empresas?.nome_fantasia || p.empresas?.razao_social || "-"}
                 </td>
                 <td className="px-4 py-3 text-neutral-600">{p.cargos?.nome || "-"}</td>
                 <td className="px-4 py-3 text-neutral-600">{p.projetos?.nome || "-"}</td>
+                <td className="px-4 py-3 text-neutral-600">{p.operadoras?.nome || "-"}</td>
                 <td className="px-4 py-3 text-neutral-600">{p.regional || p.estado_servico || "-"}</td>
+                <td className="px-4 py-3 text-neutral-600">{p.cpf || "-"}</td>
                 <td className="whitespace-nowrap px-4 py-3 text-neutral-600">{p.data_admissao || "-"}</td>
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-3 text-neutral-400">
@@ -191,7 +197,7 @@ export default async function PessoasPage({
             ))}
             {!error && (pessoas || []).length === 0 && (
               <tr>
-                <td colSpan={9} className="px-4 py-10 text-center text-neutral-500">
+                <td colSpan={12} className="px-4 py-10 text-center text-neutral-500">
                   Nenhuma pessoa encontrada.
                 </td>
               </tr>

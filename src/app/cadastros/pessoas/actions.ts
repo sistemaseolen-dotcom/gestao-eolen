@@ -12,6 +12,10 @@ function str(fd: FormData, key: string): string | null {
 function uuid(fd: FormData, key: string): string | null {
   return str(fd, key);
 }
+function num(fd: FormData, key: string): number | null {
+  const s = str(fd, key);
+  return s === null ? null : Number(s);
+}
 
 function pessoaPayload(fd: FormData) {
   return {
@@ -34,6 +38,41 @@ function pessoaPayload(fd: FormData) {
     telefone_particular: str(fd, "telefone_particular"),
     email_corporativo: str(fd, "email_corporativo"),
     telefone_corporativo: str(fd, "telefone_corporativo"),
+    cpf: str(fd, "cpf"),
+    rg: str(fd, "rg"),
+    orgao_emissor: str(fd, "orgao_emissor"),
+    data_emissao_rg: str(fd, "data_emissao_rg"),
+    data_nascimento: str(fd, "data_nascimento"),
+    sexo: str(fd, "sexo"),
+    cor: str(fd, "cor"),
+    estado_civil: str(fd, "estado_civil"),
+    naturalidade: str(fd, "naturalidade"),
+    nacionalidade: str(fd, "nacionalidade"),
+    nome_pai: str(fd, "nome_pai"),
+    nome_mae: str(fd, "nome_mae"),
+    numero_filhos: str(fd, "numero_filhos"),
+    cep: str(fd, "cep"),
+    endereco: str(fd, "endereco"),
+    numero_endereco: str(fd, "numero_endereco"),
+    complemento: str(fd, "complemento"),
+    bairro: str(fd, "bairro"),
+    municipio: str(fd, "municipio"),
+    uf_endereco: str(fd, "uf_endereco"),
+    titulo_eleitor: str(fd, "titulo_eleitor"),
+    pis: str(fd, "pis"),
+    ctps: str(fd, "ctps"),
+    data_ctps: str(fd, "data_ctps"),
+    reservista: str(fd, "reservista"),
+    cnh: str(fd, "cnh"),
+    data_validade_cnh: str(fd, "data_validade_cnh"),
+    categoria_cnh: str(fd, "categoria_cnh"),
+    escolaridade: str(fd, "escolaridade"),
+    banco: str(fd, "banco"),
+    agencia: str(fd, "agencia"),
+    salario_bruto: num(fd, "salario_bruto"),
+    valor_hora: num(fd, "valor_hora"),
+    mei: str(fd, "mei"),
+    cbo: str(fd, "cbo"),
   };
 }
 

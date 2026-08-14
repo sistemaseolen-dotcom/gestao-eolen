@@ -24,6 +24,41 @@ type PessoaValues = {
   telefone_particular?: string | null;
   email_corporativo?: string | null;
   telefone_corporativo?: string | null;
+  cpf?: string | null;
+  rg?: string | null;
+  orgao_emissor?: string | null;
+  data_emissao_rg?: string | null;
+  data_nascimento?: string | null;
+  sexo?: string | null;
+  cor?: string | null;
+  estado_civil?: string | null;
+  naturalidade?: string | null;
+  nacionalidade?: string | null;
+  nome_pai?: string | null;
+  nome_mae?: string | null;
+  numero_filhos?: string | null;
+  cep?: string | null;
+  endereco?: string | null;
+  numero_endereco?: string | null;
+  complemento?: string | null;
+  bairro?: string | null;
+  municipio?: string | null;
+  uf_endereco?: string | null;
+  titulo_eleitor?: string | null;
+  pis?: string | null;
+  ctps?: string | null;
+  data_ctps?: string | null;
+  reservista?: string | null;
+  cnh?: string | null;
+  data_validade_cnh?: string | null;
+  categoria_cnh?: string | null;
+  escolaridade?: string | null;
+  banco?: string | null;
+  agencia?: string | null;
+  salario_bruto?: number | null;
+  valor_hora?: number | null;
+  mei?: string | null;
+  cbo?: string | null;
 };
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
@@ -176,6 +211,162 @@ export default function PessoaForm({
 
       <Field label="Telefone corporativo">
         <input name="telefone_corporativo" defaultValue={initial?.telefone_corporativo || ""} className={inputCls} />
+      </Field>
+
+      <div className="col-span-full mt-4 border-t border-neutral-200 pt-4 text-sm font-semibold text-neutral-700">
+        Dados pessoais
+      </div>
+
+      <Field label="CPF">
+        <input name="cpf" defaultValue={initial?.cpf || ""} className={inputCls} />
+      </Field>
+
+      <Field label="RG">
+        <input name="rg" defaultValue={initial?.rg || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Órgão emissor">
+        <input name="orgao_emissor" defaultValue={initial?.orgao_emissor || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Data de emissão (RG)">
+        <input type="date" name="data_emissao_rg" defaultValue={initial?.data_emissao_rg || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Data de nascimento">
+        <input type="date" name="data_nascimento" defaultValue={initial?.data_nascimento || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Sexo">
+        <input name="sexo" defaultValue={initial?.sexo || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Cor">
+        <input name="cor" defaultValue={initial?.cor || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Estado civil">
+        <input name="estado_civil" defaultValue={initial?.estado_civil || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Naturalidade">
+        <input name="naturalidade" defaultValue={initial?.naturalidade || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Nacionalidade">
+        <input name="nacionalidade" defaultValue={initial?.nacionalidade || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Nome do pai">
+        <input name="nome_pai" defaultValue={initial?.nome_pai || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Nome da mãe">
+        <input name="nome_mae" defaultValue={initial?.nome_mae || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Nº de filhos">
+        <input name="numero_filhos" defaultValue={initial?.numero_filhos || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Escolaridade">
+        <input name="escolaridade" defaultValue={initial?.escolaridade || ""} className={inputCls} />
+      </Field>
+
+      <Field label="CBO">
+        <input name="cbo" defaultValue={initial?.cbo || ""} className={inputCls} />
+      </Field>
+
+      <div className="col-span-full mt-4 border-t border-neutral-200 pt-4 text-sm font-semibold text-neutral-700">
+        Endereço
+      </div>
+
+      <Field label="CEP">
+        <input name="cep" defaultValue={initial?.cep || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Endereço">
+        <input name="endereco" defaultValue={initial?.endereco || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Número">
+        <input name="numero_endereco" defaultValue={initial?.numero_endereco || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Complemento">
+        <input name="complemento" defaultValue={initial?.complemento || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Bairro">
+        <input name="bairro" defaultValue={initial?.bairro || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Município">
+        <input name="municipio" defaultValue={initial?.municipio || ""} className={inputCls} />
+      </Field>
+
+      <Field label="UF">
+        <input name="uf_endereco" defaultValue={initial?.uf_endereco || ""} className={inputCls} />
+      </Field>
+
+      <div className="col-span-full mt-4 border-t border-neutral-200 pt-4 text-sm font-semibold text-neutral-700">
+        Documentos e habilitação
+      </div>
+
+      <Field label="Título de eleitor">
+        <input name="titulo_eleitor" defaultValue={initial?.titulo_eleitor || ""} className={inputCls} />
+      </Field>
+
+      <Field label="PIS">
+        <input name="pis" defaultValue={initial?.pis || ""} className={inputCls} />
+      </Field>
+
+      <Field label="CTPS">
+        <input name="ctps" defaultValue={initial?.ctps || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Data CTPS">
+        <input type="date" name="data_ctps" defaultValue={initial?.data_ctps || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Reservista">
+        <input name="reservista" defaultValue={initial?.reservista || ""} className={inputCls} />
+      </Field>
+
+      <Field label="CNH">
+        <input name="cnh" defaultValue={initial?.cnh || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Categoria CNH">
+        <input name="categoria_cnh" defaultValue={initial?.categoria_cnh || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Validade CNH">
+        <input type="date" name="data_validade_cnh" defaultValue={initial?.data_validade_cnh || ""} className={inputCls} />
+      </Field>
+
+      <div className="col-span-full mt-4 border-t border-neutral-200 pt-4 text-sm font-semibold text-neutral-700">
+        Dados bancários
+      </div>
+
+      <Field label="MEI">
+        <input name="mei" defaultValue={initial?.mei || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Banco">
+        <input name="banco" defaultValue={initial?.banco || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Agência">
+        <input name="agencia" defaultValue={initial?.agencia || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Salário bruto">
+        <input type="number" step="0.01" name="salario_bruto" defaultValue={initial?.salario_bruto ?? ""} className={inputCls} />
+      </Field>
+
+      <Field label="Valor hora">
+        <input type="number" step="0.01" name="valor_hora" defaultValue={initial?.valor_hora ?? ""} className={inputCls} />
       </Field>
 
       <div className="col-span-full mt-2 flex gap-3">

@@ -19,6 +19,10 @@ type EmpresaValues = {
   cidade?: string | null;
   uf?: string | null;
   nome_responsavel?: string | null;
+  cnae_principal?: string | null;
+  cnae_secundario?: string | null;
+  natureza_juridica?: string | null;
+  situacao_cadastral?: string | null;
 };
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
@@ -103,6 +107,20 @@ export default function EmpresaForm({
 
       <Field label="Bairro">
         <input name="bairro" defaultValue={initial?.bairro || ""} className={inputCls} />
+      </Field>
+
+      <Field label="Situação cadastral">
+        <input name="situacao_cadastral" defaultValue={initial?.situacao_cadastral || ""} className={inputCls} />
+      </Field>
+      <Field label="Natureza jurídica">
+        <input name="natureza_juridica" defaultValue={initial?.natureza_juridica || ""} className={inputCls} />
+      </Field>
+
+      <Field label="CNAE principal">
+        <input name="cnae_principal" defaultValue={initial?.cnae_principal || ""} className={inputCls} />
+      </Field>
+      <Field label="CNAE secundário">
+        <input name="cnae_secundario" defaultValue={initial?.cnae_secundario || ""} className={inputCls} />
       </Field>
 
       <div className="col-span-full mt-2 flex gap-3">

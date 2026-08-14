@@ -27,6 +27,10 @@ function empresaPayload(fd: FormData) {
     cidade: str(fd, "cidade"),
     uf: str(fd, "uf"),
     nome_responsavel: str(fd, "nome_responsavel"),
+    cnae_principal: str(fd, "cnae_principal"),
+    cnae_secundario: str(fd, "cnae_secundario"),
+    natureza_juridica: str(fd, "natureza_juridica"),
+    situacao_cadastral: str(fd, "situacao_cadastral"),
   };
 }
 
