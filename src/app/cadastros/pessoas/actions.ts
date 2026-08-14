@@ -73,6 +73,27 @@ function pessoaPayload(fd: FormData) {
     valor_hora: num(fd, "valor_hora"),
     mei: str(fd, "mei"),
     cbo: str(fd, "cbo"),
+    cnpj_vinculado: str(fd, "cnpj_vinculado"),
+    coordenador: str(fd, "coordenador"),
+    tipo_curso: str(fd, "tipo_curso"),
+    observacao: str(fd, "observacao"),
+    id_ericsson: str(fd, "id_ericsson"),
+    id_huawei: str(fd, "id_huawei"),
+    id_zte: str(fd, "id_zte"),
+    id_isignum: str(fd, "id_isignum"),
+    senha_huawei: str(fd, "senha_huawei"),
+    senha_zte: str(fd, "senha_zte"),
+    data_cadastro: str(fd, "data_cadastro"),
+    reativacao: str(fd, "reativacao"),
+    telefone_vivo: str(fd, "telefone_vivo"),
+    imei_aparelho: str(fd, "imei_aparelho"),
+    matricula_vivo: str(fd, "matricula_vivo"),
+    permissao_tim: str(fd, "permissao_tim"),
+    numero_contrato: str(fd, "numero_contrato"),
+    validade_contrato: str(fd, "validade_contrato"),
+    status_vivo: str(fd, "status_vivo"),
+    email_va_access: str(fd, "email_va_access"),
+    observacao_matricula: str(fd, "observacao_matricula"),
   };
 }
 
@@ -111,4 +132,30 @@ export async function deletePessoa(id: string) {
   const { error } = await supabase.from("pessoas").delete().eq("id", id);
   if (error) throw new Error(error.message);
   revalidatePath("/cadastros/pessoas");
+}
+
+export async function addTreinamento(formData: FormData) {
+  const supabase = createServiceClient();
+  const pessoaId = str(formData, "pessoa_id");
+  if (!pessoaId) throw new Error("pessoa_id obrigatório");
+
+  const { error } = await supabase.from("pessoas_treinamentos").insert({
+    pessoa_id: pessoaId,
+    tipo: str(formData, "tipo"),
+    status: str(formData, "status") || "pendente",
+    data_emissao: str(formData, "data_emissao"),
+    data_vencimento: str(formData, "data_vencimento"),
+  });
+  if (error) throw new Error(error.message);
+
+  revalidatePath(`/cadastros/pessoas/${pessoaId}/editar`);
+}
+
+export async function deleteTreinamento(pessoaId: string, formData: FormData) {
+  const supabase = createServiceClient();
+  const id = str(formData, "id");
+  if (!id) return;
+  const { error } = await supabase.from("pessoas_treinamentos").delete().eq("id", id);
+  if (error) throw new Error(error.message);
+  revalidatePath(`/cadastros/pessoas/${pessoaId}/editar`);
 }
