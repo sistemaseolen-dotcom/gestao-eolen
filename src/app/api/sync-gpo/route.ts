@@ -42,9 +42,9 @@ async function syncEmpresas(supabase: any, registros: any[]) {
   const rows = registros.map((r: any) => ({
     id_legado: r.id,
     cnpj: clean(r.cnpj),
-    razao_social: clean(r.nome),
-    nome_fantasia: clean(r.fantasia),
-    porte: clean(r.porte),
+    razao_social: clean(r.nome) ?? clean(r.fantasia) ?? clean(r.cnpj) ?? "(sem nome)",
+        nome_fantasia: clean(r.fantasia),
+          porte: clean(r.porte),
     cnae_principal: clean(r.cnaep),
     cnae_secundario: clean(r.cnaes),
     natureza_juridica: clean(r.codigodescricaonatureza),
@@ -62,9 +62,15 @@ async function syncEmpresas(supabase: any, registros: any[]) {
     situacao_cadastral: clean(r.situacaocadastral),
     dados_adicionais: r,
   }));
-  const { error } = await supabase.from("empresas").upsert(rows, { onConflict: "id_legado" });
-  if (error) throw error;
-  return rows.length;
+      const chunkSize = 200;
+  let total = 0;
+  for (let i = 0; i < rows.length; i += chunkSize) {
+    const chunk = rows.slice(i, i + chunkSize);
+    const { error } = await supabase.from("empresas").upsert(chunk, { onConflict: "id_legado" });
+    if (error) throw error;
+    total += chunk.length;
+  }
+  return total;
 }
 
 async function buildLookup(supabase: any, table: string, keyCol = "nome") {
