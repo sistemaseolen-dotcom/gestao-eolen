@@ -5,6 +5,12 @@ import DeleteButton from "@/components/DeleteButton";
 
 const PAGE_SIZE = 10;
 
+const STATUS_OPTIONS = [
+  { value: "", label: "Todos os status" },
+  { value: "ativo", label: "Ativo" },
+  { value: "inativo", label: "Inativo" },
+];
+
 function StatusDot({ status }: { status: boolean | null }) {
   return (
     <span
@@ -57,10 +63,11 @@ function pageWindow(current: number, total: number) {
 export default async function EmpresasPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; page?: string }>;
+  searchParams: Promise<{ q?: string; status?: string; page?: string }>;
 }) {
   const params = await searchParams;
   const q = (params.q || "").trim();
+  const status = (params.status || "").trim();
   const page = Math.max(1, Number(params.page) || 1);
   const from = (page - 1) * PAGE_SIZE;
   const to = from + PAGE_SIZE - 1;
@@ -77,12 +84,20 @@ export default async function EmpresasPage({
     query = query.or(`razao_social.ilike.%${q}%,nome_fantasia.ilike.%${q}%,cnpj.ilike.%${q}%`);
   }
 
+  if (status) {
+    query = query.eq("status", status === "ativo");
+  }
+
   const { data: empresas, count, error } = await query;
   const totalPages = count ? Math.max(1, Math.ceil(count / PAGE_SIZE)) : 1;
   const pages = pageWindow(page, totalPages);
 
   const linkFor = (p: number) =>
-    `/cadastros/empresas?${new URLSearchParams({ ...(q ? { q } : {}), page: String(p) })}`;
+    `/cadastros/empresas?${new URLSearchParams({
+      ...(q ? { q } : {}),
+      ...(status ? { status } : {}),
+      page: String(p),
+    })}`;
 
   return (
     <main className="p-6">
@@ -98,7 +113,19 @@ export default async function EmpresasPage({
           </Link>
           <ToolbarButton>Excel</ToolbarButton>
         </div>
-        <form action="/cadastros/empresas" className="flex items-center gap-2 text-sm text-neutral-600">
+        <form action="/cadastros/empresas" className="flex flex-wrap items-center gap-2 text-sm text-neutral-600">
+          <span>Status</span>
+          <select
+            name="status"
+            defaultValue={status}
+            className="rounded-md border border-neutral-300 px-2 py-1 text-sm focus:border-[#a7332a] focus:outline-none"
+          >
+            {STATUS_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
           <span>Buscar por nome ou CNPJ</span>
           <input
             type="text"
@@ -113,7 +140,7 @@ export default async function EmpresasPage({
           >
             Filtrar
           </button>
-          {q && (
+          {(q || status) && (
             <Link href="/cadastros/empresas" className="text-neutral-500 hover:underline">
               limpar
             </Link>
