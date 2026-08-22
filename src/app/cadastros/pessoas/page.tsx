@@ -5,6 +5,14 @@ import DeleteButton from "@/components/DeleteButton";
 
 const PAGE_SIZE = 10;
 
+const STATUS_OPTIONS = [
+  { value: "", label: "Todos os status" },
+  { value: "ativo", label: "Ativo" },
+  { value: "inativo", label: "Inativo" },
+  { value: "bloqueado", label: "Bloqueado" },
+  { value: "crescimento", label: "Crescimento" },
+];
+
 function StatusDot({ status }: { status: string | null }) {
   const isAtivo = (status || "").toLowerCase() === "ativo";
   return (
@@ -58,7 +66,7 @@ function pageWindow(current: number, total: number) {
 export default async function PessoasPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; page?: string }>;
+  searchParams: Promise<{ q?: string; status?: string; page?: string }>;
 }) {
   const params = await searchParams;
   const q = (params.q || "").trim();
