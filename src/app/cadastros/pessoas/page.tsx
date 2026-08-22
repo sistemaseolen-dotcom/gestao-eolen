@@ -62,6 +62,7 @@ export default async function PessoasPage({
 }) {
   const params = await searchParams;
   const q = (params.q || "").trim();
+  const status = (params.status || "").trim();
   const page = Math.max(1, Number(params.page) || 1);
   const from = (page - 1) * PAGE_SIZE;
   const to = from + PAGE_SIZE - 1;
@@ -86,12 +87,20 @@ export default async function PessoasPage({
     query = query.ilike("nome", `%${q}%`);
   }
 
+  if (status) {
+    query = query.eq("status", status);
+  }
+
   const { data: pessoas, count, error } = await query;
   const totalPages = count ? Math.max(1, Math.ceil(count / PAGE_SIZE)) : 1;
   const pages = pageWindow(page, totalPages);
 
   const linkFor = (p: number) =>
-    `/cadastros/pessoas?${new URLSearchParams({ ...(q ? { q } : {}), page: String(p) })}`;
+    `/cadastros/pessoas?${new URLSearchParams({
+      ...(q ? { q } : {}),
+      ...(status ? { status } : {}),
+      page: String(p),
+    })}`;
 
   return (
     <main className="p-6">
@@ -109,7 +118,19 @@ export default async function PessoasPage({
           <ToolbarButton>Excel</ToolbarButton>
           <ToolbarButton>Selecionar colunas ▾</ToolbarButton>
         </div>
-        <form action="/cadastros/pessoas" className="flex items-center gap-2 text-sm text-neutral-600">
+        <form action="/cadastros/pessoas" className="flex flex-wrap items-center gap-2 text-sm text-neutral-600">
+          <span>Status</span>
+          <select
+            name="status"
+            defaultValue={status}
+            className="rounded-md border border-neutral-300 px-2 py-1 text-sm focus:border-[#a7332a] focus:outline-none"
+          >
+            {STATUS_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
           <span>Buscar por nome</span>
           <input
             type="text"
@@ -124,7 +145,7 @@ export default async function PessoasPage({
           >
             Filtrar
           </button>
-          {q && (
+          {(q || status) && (
             <Link href="/cadastros/pessoas" className="text-neutral-500 hover:underline">
               limpar
             </Link>
