@@ -5,6 +5,12 @@ import DeleteButton from "@/components/DeleteButton";
 
 const PAGE_SIZE = 15;
 
+const STATUS_OPTIONS = [
+  { value: "", label: "Todos os status" },
+  { value: "ativo", label: "Ativo" },
+  { value: "inativo", label: "Inativo" },
+];
+
 function StatusDot({ status }: { status: boolean | null }) {
   return (
     <span
@@ -27,10 +33,11 @@ function pageWindow(current: number, total: number) {
 export default async function EquipesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; page?: string }>;
+  searchParams: Promise<{ q?: string; status?: string; page?: string }>;
 }) {
   const params = await searchParams;
   const q = (params.q || "").trim();
+  const status = (params.status || "").trim();
   const page = Math.max(1, Number(params.page) || 1);
   const from = (page - 1) * PAGE_SIZE;
   const to = from + PAGE_SIZE - 1;
@@ -50,11 +57,17 @@ export default async function EquipesPage({
     .range(from, to);
 
   if (q) query = query.ilike("nome", `%${q}%`);
+  if (status) query = query.eq("status", status === "ativo");
 
   const { data: equipes, count, error } = await query;
   const totalPages = count ? Math.max(1, Math.ceil(count / PAGE_SIZE)) : 1;
   const pages = pageWindow(page, totalPages);
-  const linkFor = (p: number) => `/cadastros/equipes?${new URLSearchParams({ ...(q ? { q } : {}), page: String(p) })}`;
+  const linkFor = (p: number) =>
+    `/cadastros/equipes?${new URLSearchParams({
+      ...(q ? { q } : {}),
+      ...(status ? { status } : {}),
+      page: String(p),
+    })}`;
 
   return (
     <main className="p-6">
@@ -64,7 +77,19 @@ export default async function EquipesPage({
         <Link href="/cadastros/equipes/novo" className="rounded-md border border-neutral-300 bg-white px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-50">
           + Inserir
         </Link>
-        <form action="/cadastros/equipes" className="flex items-center gap-2 text-sm text-neutral-600">
+        <form action="/cadastros/equipes" className="flex flex-wrap items-center gap-2 text-sm text-neutral-600">
+          <span>Status</span>
+          <select
+            name="status"
+            defaultValue={status}
+            className="rounded-md border border-neutral-300 px-2 py-1 text-sm focus:border-[#a7332a] focus:outline-none"
+          >
+            {STATUS_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
           <span>Buscar por nome</span>
           <input
             type="text"
@@ -75,7 +100,7 @@ export default async function EquipesPage({
           <button type="submit" className="rounded-md bg-[#a7332a] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#8c2a23]">
             Filtrar
           </button>
-          {q && <Link href="/cadastros/equipes" className="text-neutral-500 hover:underline">limpar</Link>}
+          {(q || status) && <Link href="/cadastros/equipes" className="text-neutral-500 hover:underline">limpar</Link>}
         </form>
       </div>
 
