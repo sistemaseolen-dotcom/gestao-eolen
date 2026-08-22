@@ -88,19 +88,20 @@ function find(map: Map<string, string>, nome: any): string | null {
 }
 
 async function syncPessoas(supabase: any, registros: any[]) {
-  const [mProjetos, mOperadoras, mCargos, mCargosAso, mEquipes, mEmpresasRazao, mEmpresasFantasia] =
-    await Promise.all([
-      buildLookup(supabase, "projetos"),
+  const [mProjetos, mOperadoras, mCargos, mCargosAso, mEquipes, mEmpresasRazao, mEmpresasFantasia, mEmpresasLegado] =
+          await Promise.all([
+              buildLookup(supabase, "projetos"),
       buildLookup(supabase, "operadoras"),
       buildLookup(supabase, "cargos"),
       buildLookup(supabase, "cargos_aso"),
       buildLookup(supabase, "equipes"),
       buildLookup(supabase, "empresas", "razao_social"),
       buildLookup(supabase, "empresas", "nome_fantasia"),
+      buildLookup(supabase, "empresas", "id_legado"),
       ]);
 
-const findEmpresa = (nome: any) =>
-  find(mEmpresasRazao, nome) ?? find(mEmpresasFantasia, nome);
+    const findEmpresa = (r: any) =>
+      find(mEmpresasLegado, r.empresa) ?? find(mEmpresasRazao, r.nomeempresa) ?? find(mEmpresasFantasia, r.nomeempresa) ?? find(mEmpresasRazao, r.empresanome) ?? find(mEmpresasFantasia, r.empresanome);
 
 const rows = registros.map((r: any) => ({
   id_legado: r.id,
@@ -118,7 +119,7 @@ const rows = registros.map((r: any) => ({
   matricula_esocial: clean(r.matriculaesocial),
   cargo_id: find(mCargos, r.cargo),
   cargo_aso_id: find(mCargosAso, r.cargoaso),
-  empresa_id: findEmpresa(r.empresa || r.empresanome),
+      empresa_id: findEmpresa(r),
   cnpj_vinculado: clean(r.contrato),
   email_particular: clean(r.email),
   telefone_particular: clean(r.telefone),
